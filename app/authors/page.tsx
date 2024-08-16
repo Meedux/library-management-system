@@ -1,6 +1,6 @@
-import BookCard from '@/components/BookCard'
 import Navbar from '@/components/Navbar'
 import React from 'react'
+import AuthorCard from '@/components/AuthorCard'
 
 const page = () => {
   return (
@@ -33,16 +33,16 @@ const page = () => {
         {/* Books Section */}
         <div className="grid grid-cols-8 gap-6 mt-20">
           <div className="col-span-2">
-            <BookCard />
+            <AuthorCard />
           </div>
           <div className="col-span-2">
-            <BookCard />
+            <AuthorCard />
           </div>
           <div className="col-span-2">
-            <BookCard />
+            <AuthorCard />
           </div>
           <div className="col-span-2">
-            <BookCard />
+            <AuthorCard />
           </div>
         </div>
     </>
