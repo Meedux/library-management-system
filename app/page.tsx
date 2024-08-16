@@ -1,9 +1,38 @@
+"use client";
+
 import BookCard from "@/components/BookCard";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Book } from "@prisma/client";
+import axios from "axios";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
 
 export default function Home() {
+  const [books,setBooks] = useState<Book[]>([])
+
+  function chooseRandomBooks(books: Book[]) {
+    if (!Array.isArray(books)) {
+      console.error('Expected an array of books, but got:', books);
+      return [];
+    }
+    return books.sort(() => Math.random() - Math.random()).slice(0, 4);
+  }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/books');
+        const data: { book: Book[] } = response.data;
+        console.log('Fetched books:', data.book);
+        const randomBooks = chooseRandomBooks(data.book);
+        setBooks(randomBooks);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    })();
+  }, []);
   return (
     <>
       <Navbar />
@@ -30,7 +59,7 @@ export default function Home() {
         </div>
 
         {/* Search Section */}
-        <div className="grid grid-cols-6 gap-4 mt-20">
+        {/* <div className="grid grid-cols-6 gap-4 mt-20">
           <div className="col-span-6">
             <div className="flex justify-center items-center">
               <label className="input w-1/2 input-bordered mr-6 flex items-center gap-2">
@@ -51,22 +80,20 @@ export default function Home() {
               <button className="btn btn-success">Search</button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Books Section */}
         <div className="grid grid-cols-8 gap-6 mt-20">
-          <div className="col-span-2">
+          {/* <div className="col-span-2">
             <BookCard />
-          </div>
-          <div className="col-span-2">
-            <BookCard />
-          </div>
-          <div className="col-span-2">
-            <BookCard />
-          </div>
-          <div className="col-span-2">
-            <BookCard />
-          </div>
+          </div> */}
+          {
+            books.map((book: Book) => (
+              <div key={book.id} className="col-span-2">
+                <BookCard book={book} />
+              </div>
+            ))
+          }
         </div>
 
         {/* Footer Section */}

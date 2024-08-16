@@ -1,8 +1,25 @@
+"use client";
+
 import Navbar from '@/components/Navbar'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AuthorCard from '@/components/AuthorCard'
+import { Author } from '@prisma/client'
+import axios from 'axios'
 
 const page = () => {
+  const [authors,setAuthors] = useState<Author[]>([])
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/author');
+        const data = response.data;
+        setAuthors(data.authors);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    })();
+  }, []);
   return (
     <>
       <Navbar />
@@ -32,18 +49,17 @@ const page = () => {
 
         {/* Books Section */}
         <div className="grid grid-cols-8 gap-6 mt-20">
-          <div className="col-span-2">
+          {/* <div className="col-span-2">
             <AuthorCard />
-          </div>
-          <div className="col-span-2">
-            <AuthorCard />
-          </div>
-          <div className="col-span-2">
-            <AuthorCard />
-          </div>
-          <div className="col-span-2">
-            <AuthorCard />
-          </div>
+          </div> */}
+
+          {
+            authors.map(author => (
+              <div key={author.id} className="col-span-2">
+                <AuthorCard author={author} />
+              </div>
+            ))
+          }
         </div>
     </>
   )

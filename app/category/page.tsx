@@ -1,25 +1,36 @@
-import BookCard from '@/components/BookCard'
-import Navbar from '@/components/Navbar'
-import React from 'react'
+
+"use client";
+
+import React, { useState } from 'react'
 import CategoryCardLarge from '@/components/CategoryCardLarge'
+import { useEffect } from 'react'
+import { Category } from '@prisma/client'
 
 const page = () => {
+  const [categories,setCategories] = useState<Category[]>([])
+  useEffect(() => {
+    (
+      async () => {
+        try {
+          const response = await fetch('http://localhost:3000/api/category')
+          const data = await response.json()
+          setCategories(data.category)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    )()
+  }, [])
   return (
     <>
-        {/* Books Section */}
         <div className="grid grid-cols-8 gap-6 mt-20">
-          <div className="col-span-2">
-            <CategoryCardLarge />
-          </div>
-          <div className="col-span-2">
-            <CategoryCardLarge />
-          </div>
-          <div className="col-span-2">
-            <CategoryCardLarge />
-          </div>
-          <div className="col-span-2">
-            <CategoryCardLarge />
-          </div>
+          {
+            categories?.map(category => (
+              <div key={category.id} className="col-span-2">
+                <CategoryCardLarge category={category} />
+              </div>
+            ))
+          }
         </div>
     </>
   )

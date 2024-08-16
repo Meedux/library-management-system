@@ -1,8 +1,25 @@
+"use client";
+
 import BookCard from '@/components/BookCard'
 import Navbar from '@/components/Navbar'
-import React from 'react'
+import { Book } from '@prisma/client';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 const page = () => {
+  const [books,setBooks] = useState<Book[]>([])
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/books');
+        const data: { book: Book[] } = response.data;
+        setBooks(data.book);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    })();
+  }, []);
   return (
     <>
       {/* Search Section */}
@@ -31,18 +48,13 @@ const page = () => {
 
         {/* Books Section */}
         <div className="grid grid-cols-8 gap-6 mt-20">
-          <div className="col-span-2">
-            <BookCard />
-          </div>
-          <div className="col-span-2">
-            <BookCard />
-          </div>
-          <div className="col-span-2">
-            <BookCard />
-          </div>
-          <div className="col-span-2">
-            <BookCard />
-          </div>
+          {
+            books.map(book => (
+              <div key={book.id} className="col-span-2">
+                <BookCard book={book} />
+              </div>
+            ))
+          }
         </div>
     </>
   )

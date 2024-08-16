@@ -1,8 +1,9 @@
 import React from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
+import { Author } from '@prisma/client';
 
-const AuthorCard = () => {
+const AuthorCard = ({ author }: { author: Author }) => {
     return (
         <>
           <div className="card card-compact bg-base-100 w-96 shadow-xl">
@@ -15,10 +16,10 @@ const AuthorCard = () => {
               />
             </figure>
             <div className="card-body">
-              <h2 className="card-title">Author Name</h2>
-              <p>Author Desciption</p>
+              <h2 className="card-title">{author.AuthorName}</h2>
+              <p>{author.AuthorDescription}</p>
               <div className="card-actions justify-end">
-                <Link href="/authors/16" className="btn btn-primary">Discover</Link>
+                <Link href={`/authors/${author.id}`} className="btn btn-primary">Discover</Link>
               </div>
             </div>
           </div>

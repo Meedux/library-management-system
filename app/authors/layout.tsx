@@ -14,6 +14,7 @@ export default function BookLayout({
 }>) {
   return (
     <div className="container">
+      <Navbar />
       {children}
     </div>
   );
