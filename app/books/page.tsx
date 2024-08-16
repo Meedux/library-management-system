@@ -5,7 +5,6 @@ import React from 'react'
 const page = () => {
   return (
     <>
-      <Navbar />
       {/* Search Section */}
       <div className="grid grid-cols-6 gap-4 mt-20">
           <div className="col-span-6">
