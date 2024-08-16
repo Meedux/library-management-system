@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image';
+import Link from 'next/link';
 
 const AuthorCard = () => {
     return (
@@ -17,7 +18,7 @@ const AuthorCard = () => {
               <h2 className="card-title">Author Name</h2>
               <p>Author Desciption</p>
               <div className="card-actions justify-end">
-                <button className="btn btn-primary">Discover</button>
+                <Link href="/authors/16" className="btn btn-primary">Discover</Link>
               </div>
             </div>
           </div>
