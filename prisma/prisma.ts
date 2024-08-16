@@ -8,12 +8,10 @@ export const getAuthors = async () => {
 };
 
 export const getAuthorBooks = async (id: number) => {
-    return await prisma.author.findUnique({
+    console.log(id);
+    return await prisma.book.findMany({
         where: {
-            id: id,
-        },
-        include: {
-            Books: true,
+            authorId: id,
         },
     });
 };
@@ -38,7 +36,7 @@ export const getBooks = async () => {
 };
 
 export const getBook = async (id: number) => {
-    return await prisma.book.findUnique({
+    return await prisma.book.findFirst({
         where: {
             id: id,
         },
