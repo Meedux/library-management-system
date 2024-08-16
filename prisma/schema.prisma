@@ -1,33 +1,33 @@
-datasource db {
-  url      = env("DATABASE_URL")
-  provider = "postgresql"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Book {
-    id Int @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    name String @unique
-}
-
-model Category {
-    id Int @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    name String @unique
+  id              Int      @id @default(autoincrement())
+  BookName        String
+  BookDescription String
+  BookContent     String
+  authorId        Int
+  categoryId      Int
+  author          Author   @relation(fields: [authorId], references: [id])
+  category        Category @relation(fields: [categoryId], references: [id])
 }
 
 model Author {
-    id Int @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    name String @unique
+  id                Int    @id @default(autoincrement())
+  AuthorName        String
+  AuthorDescription String
+  Books             Book[]
+}
+
+model Category {
+  id                  Int    @id @default(autoincrement())
+  CategoryName        String
+  CategoryDescription String
+  Books               Book[]
 }
